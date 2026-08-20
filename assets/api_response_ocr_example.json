@@ -1,0 +1,1588 @@
+{
+    "id": "req-81f8cec1-cc6e-4d44-a015-5ac38eba94ad",
+    "choices": [
+        {
+            "finish_reason": "stop",
+            "index": 0,
+            "logprobs": null,
+            "message": {
+                "content": "{\"first_name\":\"IVÁN ICHET\",\"last_name\":\"MUÑOZ ESTRADA\",\"dob\":\"09/12/1987\",\"driver_licence_number\":\"Y4067081\"}",
+                "refusal": null,
+                "role": "assistant",
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "tool_calls": null,
+                "parsed": {
+                    "first_name": "IVÁN ICHET",
+                    "last_name": "MUÑOZ ESTRADA",
+                    "dob": "09/12/1987",
+                    "driver_licence_number": "Y4067081"
+                }
+            }
+        }
+    ],
+    "created": 1787247310,
+    "model": "interfaze-beta",
+    "object": "chat.completion",
+    "moderation": null,
+    "service_tier": null,
+    "system_fingerprint": null,
+    "usage": {
+        "completion_tokens": 172,
+        "prompt_tokens": 6513,
+        "total_tokens": 6685,
+        "completion_tokens_details": {
+            "accepted_prediction_tokens": null,
+            "audio_tokens": null,
+            "reasoning_tokens": 0,
+            "rejected_prediction_tokens": null,
+            "cached_tokens": 514
+        },
+        "prompt_tokens_details": {
+            "audio_tokens": null,
+            "cache_write_tokens": null,
+            "cached_tokens": 2880
+        }
+    },
+    "vcache": true,
+    "precontext": [
+        {
+            "name": "ocr",
+            "result": {
+                "extracted_text": "California\nUSA\nDRIVER LICENSE\nDL Y4067081\nCLASS C\nEXP 09/12/2027\nEND NONE\nEN MUÑOZ ESTRADA\nFN IVÁN ICHET\n14223 BELGATE ST\nBALDWIN PARK CA 91706\nDOB 09/12/1987\nRSTRNONE 09121987\nIvan M.\nSEX M HAIR BLK EYES BLK\nHGT 5-02\" WGT 185lb ISS\nDD 08/13/202160648/AAFD/27 07/25/2022",
+                "sections": [
+                    {
+                        "text": "California\nUSA\nDRIVER LICENSE\nDL Y4067081\nCLASS C\nEXP 09/12/2027\nEND NONE\nEN MUÑOZ ESTRADA\nFN IVÁN ICHET\n14223 BELGATE ST\nBALDWIN PARK CA 91706\nDOB 09/12/1987\nRSTRNONE 09121987\nIvan M.\nSEX M HAIR BLK EYES BLK\nHGT 5-02\" WGT 185lb ISS\nDD 08/13/202160648/AAFD/27 07/25/2022",
+                        "lines": [
+                            {
+                                "text": "California",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 63,
+                                        "y": 89
+                                    },
+                                    "top_right": {
+                                        "x": 268,
+                                        "y": 89
+                                    },
+                                    "bottom_right": {
+                                        "x": 268,
+                                        "y": 129
+                                    },
+                                    "bottom_left": {
+                                        "x": 63,
+                                        "y": 129
+                                    },
+                                    "width": 205,
+                                    "height": 40
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "California",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 64,
+                                                "y": 90
+                                            },
+                                            "top_right": {
+                                                "x": 267,
+                                                "y": 89
+                                            },
+                                            "bottom_right": {
+                                                "x": 267,
+                                                "y": 130
+                                            },
+                                            "bottom_left": {
+                                                "x": 63,
+                                                "y": 130
+                                            },
+                                            "width": 203.5,
+                                            "height": 40.5
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "USA",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 270,
+                                        "y": 100
+                                    },
+                                    "top_right": {
+                                        "x": 296,
+                                        "y": 99
+                                    },
+                                    "bottom_right": {
+                                        "x": 296,
+                                        "y": 114
+                                    },
+                                    "bottom_left": {
+                                        "x": 269,
+                                        "y": 115
+                                    },
+                                    "width": 26.5,
+                                    "height": 15
+                                },
+                                "average_confidence": 0.96,
+                                "words": [
+                                    {
+                                        "text": "USA",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 269,
+                                                "y": 100
+                                            },
+                                            "top_right": {
+                                                "x": 294,
+                                                "y": 99
+                                            },
+                                            "bottom_right": {
+                                                "x": 295,
+                                                "y": 114
+                                            },
+                                            "bottom_left": {
+                                                "x": 269,
+                                                "y": 115
+                                            },
+                                            "width": 25.5,
+                                            "height": 15
+                                        },
+                                        "confidence": 0.96
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "DRIVER LICENSE",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 334,
+                                        "y": 91
+                                    },
+                                    "top_right": {
+                                        "x": 497,
+                                        "y": 91
+                                    },
+                                    "bottom_right": {
+                                        "x": 497,
+                                        "y": 113
+                                    },
+                                    "bottom_left": {
+                                        "x": 334,
+                                        "y": 114
+                                    },
+                                    "width": 163,
+                                    "height": 22.5
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "DRIVER",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 335,
+                                                "y": 91
+                                            },
+                                            "top_right": {
+                                                "x": 405,
+                                                "y": 92
+                                            },
+                                            "bottom_right": {
+                                                "x": 405,
+                                                "y": 114
+                                            },
+                                            "bottom_left": {
+                                                "x": 335,
+                                                "y": 115
+                                            },
+                                            "width": 70,
+                                            "height": 23
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "LICENSE",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 412,
+                                                "y": 92
+                                            },
+                                            "top_right": {
+                                                "x": 494,
+                                                "y": 91
+                                            },
+                                            "bottom_right": {
+                                                "x": 494,
+                                                "y": 113
+                                            },
+                                            "bottom_left": {
+                                                "x": 412,
+                                                "y": 114
+                                            },
+                                            "width": 82,
+                                            "height": 22
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "DL Y4067081",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 247,
+                                        "y": 153
+                                    },
+                                    "top_right": {
+                                        "x": 394,
+                                        "y": 153
+                                    },
+                                    "bottom_right": {
+                                        "x": 394,
+                                        "y": 178
+                                    },
+                                    "bottom_left": {
+                                        "x": 247,
+                                        "y": 179
+                                    },
+                                    "width": 147,
+                                    "height": 25.5
+                                },
+                                "average_confidence": 0.93,
+                                "words": [
+                                    {
+                                        "text": "DL",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 247,
+                                                "y": 154
+                                            },
+                                            "top_right": {
+                                                "x": 267,
+                                                "y": 154
+                                            },
+                                            "bottom_right": {
+                                                "x": 267,
+                                                "y": 179
+                                            },
+                                            "bottom_left": {
+                                                "x": 247,
+                                                "y": 179
+                                            },
+                                            "width": 20,
+                                            "height": 25
+                                        },
+                                        "confidence": 0.92
+                                    },
+                                    {
+                                        "text": "Y4067081",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 272,
+                                                "y": 154
+                                            },
+                                            "top_right": {
+                                                "x": 393,
+                                                "y": 154
+                                            },
+                                            "bottom_right": {
+                                                "x": 393,
+                                                "y": 179
+                                            },
+                                            "bottom_left": {
+                                                "x": 272,
+                                                "y": 179
+                                            },
+                                            "width": 121,
+                                            "height": 25
+                                        },
+                                        "confidence": 0.95
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "CLASS C",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 453,
+                                        "y": 153
+                                    },
+                                    "top_right": {
+                                        "x": 521,
+                                        "y": 153
+                                    },
+                                    "bottom_right": {
+                                        "x": 521,
+                                        "y": 168
+                                    },
+                                    "bottom_left": {
+                                        "x": 453,
+                                        "y": 169
+                                    },
+                                    "width": 68,
+                                    "height": 15.5
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "CLASS",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 454,
+                                                "y": 153
+                                            },
+                                            "top_right": {
+                                                "x": 503,
+                                                "y": 153
+                                            },
+                                            "bottom_right": {
+                                                "x": 503,
+                                                "y": 169
+                                            },
+                                            "bottom_left": {
+                                                "x": 455,
+                                                "y": 169
+                                            },
+                                            "width": 48.5,
+                                            "height": 16
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "C",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 510,
+                                                "y": 154
+                                            },
+                                            "top_right": {
+                                                "x": 518,
+                                                "y": 154
+                                            },
+                                            "bottom_right": {
+                                                "x": 518,
+                                                "y": 168
+                                            },
+                                            "bottom_left": {
+                                                "x": 510,
+                                                "y": 169
+                                            },
+                                            "width": 8,
+                                            "height": 14.5
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "EXP 09/12/2027",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 244,
+                                        "y": 184
+                                    },
+                                    "top_right": {
+                                        "x": 397,
+                                        "y": 184
+                                    },
+                                    "bottom_right": {
+                                        "x": 397,
+                                        "y": 207
+                                    },
+                                    "bottom_left": {
+                                        "x": 244,
+                                        "y": 208
+                                    },
+                                    "width": 153,
+                                    "height": 23.5
+                                },
+                                "average_confidence": 0.96,
+                                "words": [
+                                    {
+                                        "text": "EXP",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 249,
+                                                "y": 185
+                                            },
+                                            "top_right": {
+                                                "x": 278,
+                                                "y": 185
+                                            },
+                                            "bottom_right": {
+                                                "x": 277,
+                                                "y": 209
+                                            },
+                                            "bottom_left": {
+                                                "x": 248,
+                                                "y": 208
+                                            },
+                                            "width": 29,
+                                            "height": 23.5
+                                        },
+                                        "confidence": 0.97
+                                    },
+                                    {
+                                        "text": "09/12/2027",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 283,
+                                                "y": 185
+                                            },
+                                            "top_right": {
+                                                "x": 397,
+                                                "y": 184
+                                            },
+                                            "bottom_right": {
+                                                "x": 397,
+                                                "y": 208
+                                            },
+                                            "bottom_left": {
+                                                "x": 282,
+                                                "y": 209
+                                            },
+                                            "width": 114.5,
+                                            "height": 24
+                                        },
+                                        "confidence": 0.94
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "END NONE",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 454,
+                                        "y": 191
+                                    },
+                                    "top_right": {
+                                        "x": 536,
+                                        "y": 191
+                                    },
+                                    "bottom_right": {
+                                        "x": 536,
+                                        "y": 206
+                                    },
+                                    "bottom_left": {
+                                        "x": 454,
+                                        "y": 206
+                                    },
+                                    "width": 82,
+                                    "height": 15
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "END",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 456,
+                                                "y": 192
+                                            },
+                                            "top_right": {
+                                                "x": 484,
+                                                "y": 192
+                                            },
+                                            "bottom_right": {
+                                                "x": 484,
+                                                "y": 206
+                                            },
+                                            "bottom_left": {
+                                                "x": 456,
+                                                "y": 206
+                                            },
+                                            "width": 28,
+                                            "height": 14
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "NONE",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 493,
+                                                "y": 192
+                                            },
+                                            "top_right": {
+                                                "x": 533,
+                                                "y": 192
+                                            },
+                                            "bottom_right": {
+                                                "x": 533,
+                                                "y": 207
+                                            },
+                                            "bottom_left": {
+                                                "x": 492,
+                                                "y": 207
+                                            },
+                                            "width": 40.5,
+                                            "height": 15
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "EN MUÑOZ ESTRADA",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 248,
+                                        "y": 213
+                                    },
+                                    "top_right": {
+                                        "x": 449,
+                                        "y": 211
+                                    },
+                                    "bottom_right": {
+                                        "x": 449,
+                                        "y": 232
+                                    },
+                                    "bottom_left": {
+                                        "x": 248,
+                                        "y": 234
+                                    },
+                                    "width": 201,
+                                    "height": 21
+                                },
+                                "average_confidence": 0.73,
+                                "words": [
+                                    {
+                                        "text": "EN",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 249,
+                                                "y": 214
+                                            },
+                                            "top_right": {
+                                                "x": 269,
+                                                "y": 213
+                                            },
+                                            "bottom_right": {
+                                                "x": 269,
+                                                "y": 234
+                                            },
+                                            "bottom_left": {
+                                                "x": 249,
+                                                "y": 234
+                                            },
+                                            "width": 20,
+                                            "height": 20.5
+                                        },
+                                        "confidence": 0.31
+                                    },
+                                    {
+                                        "text": "MUÑOZ",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 274,
+                                                "y": 213
+                                            },
+                                            "top_right": {
+                                                "x": 347,
+                                                "y": 212
+                                            },
+                                            "bottom_right": {
+                                                "x": 347,
+                                                "y": 234
+                                            },
+                                            "bottom_left": {
+                                                "x": 274,
+                                                "y": 234
+                                            },
+                                            "width": 73,
+                                            "height": 21.5
+                                        },
+                                        "confidence": 0.95
+                                    },
+                                    {
+                                        "text": "ESTRADA",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 353,
+                                                "y": 212
+                                            },
+                                            "top_right": {
+                                                "x": 444,
+                                                "y": 212
+                                            },
+                                            "bottom_right": {
+                                                "x": 444,
+                                                "y": 233
+                                            },
+                                            "bottom_left": {
+                                                "x": 353,
+                                                "y": 234
+                                            },
+                                            "width": 91,
+                                            "height": 21.5
+                                        },
+                                        "confidence": 0.92
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "FN IVÁN ICHET",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 250,
+                                        "y": 233
+                                    },
+                                    "top_right": {
+                                        "x": 389,
+                                        "y": 233
+                                    },
+                                    "bottom_right": {
+                                        "x": 389,
+                                        "y": 253
+                                    },
+                                    "bottom_left": {
+                                        "x": 250,
+                                        "y": 254
+                                    },
+                                    "width": 139,
+                                    "height": 20.5
+                                },
+                                "average_confidence": 0.85,
+                                "words": [
+                                    {
+                                        "text": "FN",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 250,
+                                                "y": 234
+                                            },
+                                            "top_right": {
+                                                "x": 270,
+                                                "y": 234
+                                            },
+                                            "bottom_right": {
+                                                "x": 270,
+                                                "y": 254
+                                            },
+                                            "bottom_left": {
+                                                "x": 250,
+                                                "y": 255
+                                            },
+                                            "width": 20,
+                                            "height": 20.5
+                                        },
+                                        "confidence": 0.86
+                                    },
+                                    {
+                                        "text": "IVÁN",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 274,
+                                                "y": 234
+                                            },
+                                            "top_right": {
+                                                "x": 318,
+                                                "y": 234
+                                            },
+                                            "bottom_right": {
+                                                "x": 317,
+                                                "y": 254
+                                            },
+                                            "bottom_left": {
+                                                "x": 274,
+                                                "y": 254
+                                            },
+                                            "width": 43.5,
+                                            "height": 20
+                                        },
+                                        "confidence": 0.7
+                                    },
+                                    {
+                                        "text": "ICHET",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 327,
+                                                "y": 234
+                                            },
+                                            "top_right": {
+                                                "x": 387,
+                                                "y": 233
+                                            },
+                                            "bottom_right": {
+                                                "x": 386,
+                                                "y": 254
+                                            },
+                                            "bottom_left": {
+                                                "x": 327,
+                                                "y": 254
+                                            },
+                                            "width": 59.5,
+                                            "height": 20.5
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "14223 BELGATE ST",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 250,
+                                        "y": 255
+                                    },
+                                    "top_right": {
+                                        "x": 393,
+                                        "y": 253
+                                    },
+                                    "bottom_right": {
+                                        "x": 393,
+                                        "y": 271
+                                    },
+                                    "bottom_left": {
+                                        "x": 251,
+                                        "y": 272
+                                    },
+                                    "width": 142.5,
+                                    "height": 17.5
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "14223",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 252,
+                                                "y": 256
+                                            },
+                                            "top_right": {
+                                                "x": 293,
+                                                "y": 256
+                                            },
+                                            "bottom_right": {
+                                                "x": 293,
+                                                "y": 272
+                                            },
+                                            "bottom_left": {
+                                                "x": 252,
+                                                "y": 272
+                                            },
+                                            "width": 41,
+                                            "height": 16
+                                        },
+                                        "confidence": 1
+                                    },
+                                    {
+                                        "text": "BELGATE",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 296,
+                                                "y": 256
+                                            },
+                                            "top_right": {
+                                                "x": 366,
+                                                "y": 255
+                                            },
+                                            "bottom_right": {
+                                                "x": 366,
+                                                "y": 271
+                                            },
+                                            "bottom_left": {
+                                                "x": 297,
+                                                "y": 272
+                                            },
+                                            "width": 69.5,
+                                            "height": 16
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "ST",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 373,
+                                                "y": 254
+                                            },
+                                            "top_right": {
+                                                "x": 391,
+                                                "y": 254
+                                            },
+                                            "bottom_right": {
+                                                "x": 391,
+                                                "y": 271
+                                            },
+                                            "bottom_left": {
+                                                "x": 372,
+                                                "y": 271
+                                            },
+                                            "width": 18.5,
+                                            "height": 17
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "BALDWIN PARK CA 91706",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 250,
+                                        "y": 270
+                                    },
+                                    "top_right": {
+                                        "x": 440,
+                                        "y": 269
+                                    },
+                                    "bottom_right": {
+                                        "x": 440,
+                                        "y": 286
+                                    },
+                                    "bottom_left": {
+                                        "x": 250,
+                                        "y": 287
+                                    },
+                                    "width": 190,
+                                    "height": 17
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "BALDWIN",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 251,
+                                                "y": 271
+                                            },
+                                            "top_right": {
+                                                "x": 320,
+                                                "y": 270
+                                            },
+                                            "bottom_right": {
+                                                "x": 319,
+                                                "y": 287
+                                            },
+                                            "bottom_left": {
+                                                "x": 251,
+                                                "y": 287
+                                            },
+                                            "width": 68.5,
+                                            "height": 16.5
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "PARK",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 327,
+                                                "y": 270
+                                            },
+                                            "top_right": {
+                                                "x": 365,
+                                                "y": 270
+                                            },
+                                            "bottom_right": {
+                                                "x": 365,
+                                                "y": 287
+                                            },
+                                            "bottom_left": {
+                                                "x": 326,
+                                                "y": 287
+                                            },
+                                            "width": 38.5,
+                                            "height": 17
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "CA",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 372,
+                                                "y": 270
+                                            },
+                                            "top_right": {
+                                                "x": 392,
+                                                "y": 270
+                                            },
+                                            "bottom_right": {
+                                                "x": 392,
+                                                "y": 287
+                                            },
+                                            "bottom_left": {
+                                                "x": 372,
+                                                "y": 287
+                                            },
+                                            "width": 20,
+                                            "height": 17
+                                        },
+                                        "confidence": 1
+                                    },
+                                    {
+                                        "text": "91706",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 397,
+                                                "y": 270
+                                            },
+                                            "top_right": {
+                                                "x": 439,
+                                                "y": 269
+                                            },
+                                            "bottom_right": {
+                                                "x": 438,
+                                                "y": 287
+                                            },
+                                            "bottom_left": {
+                                                "x": 396,
+                                                "y": 287
+                                            },
+                                            "width": 42,
+                                            "height": 17.5
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "DOB 09/12/1987",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 251,
+                                        "y": 291
+                                    },
+                                    "top_right": {
+                                        "x": 404,
+                                        "y": 289
+                                    },
+                                    "bottom_right": {
+                                        "x": 404,
+                                        "y": 311
+                                    },
+                                    "bottom_left": {
+                                        "x": 251,
+                                        "y": 313
+                                    },
+                                    "width": 153,
+                                    "height": 22
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "DOB",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 252,
+                                                "y": 293
+                                            },
+                                            "top_right": {
+                                                "x": 285,
+                                                "y": 292
+                                            },
+                                            "bottom_right": {
+                                                "x": 285,
+                                                "y": 312
+                                            },
+                                            "bottom_left": {
+                                                "x": 252,
+                                                "y": 313
+                                            },
+                                            "width": 33,
+                                            "height": 20
+                                        },
+                                        "confidence": 1
+                                    },
+                                    {
+                                        "text": "09/12/1987",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 291,
+                                                "y": 291
+                                            },
+                                            "top_right": {
+                                                "x": 404,
+                                                "y": 290
+                                            },
+                                            "bottom_right": {
+                                                "x": 404,
+                                                "y": 312
+                                            },
+                                            "bottom_left": {
+                                                "x": 291,
+                                                "y": 312
+                                            },
+                                            "width": 113,
+                                            "height": 21.5
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "RSTRNONE 09121987",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 251,
+                                        "y": 314
+                                    },
+                                    "top_right": {
+                                        "x": 614,
+                                        "y": 309
+                                    },
+                                    "bottom_right": {
+                                        "x": 614,
+                                        "y": 327
+                                    },
+                                    "bottom_left": {
+                                        "x": 251,
+                                        "y": 331
+                                    },
+                                    "width": 363,
+                                    "height": 16.5
+                                },
+                                "average_confidence": 0.98,
+                                "words": [
+                                    {
+                                        "text": "RSTRNONE",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 252,
+                                                "y": 315
+                                            },
+                                            "top_right": {
+                                                "x": 341,
+                                                "y": 314
+                                            },
+                                            "bottom_right": {
+                                                "x": 341,
+                                                "y": 331
+                                            },
+                                            "bottom_left": {
+                                                "x": 251,
+                                                "y": 331
+                                            },
+                                            "width": 89.5,
+                                            "height": 16.5
+                                        },
+                                        "confidence": 0.96
+                                    },
+                                    {
+                                        "text": "09121987",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 527,
+                                                "y": 310
+                                            },
+                                            "top_right": {
+                                                "x": 614,
+                                                "y": 309
+                                            },
+                                            "bottom_right": {
+                                                "x": 613,
+                                                "y": 328
+                                            },
+                                            "bottom_left": {
+                                                "x": 527,
+                                                "y": 329
+                                            },
+                                            "width": 86.5,
+                                            "height": 19
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "Ivan M.",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 76,
+                                        "y": 374
+                                    },
+                                    "top_right": {
+                                        "x": 239,
+                                        "y": 376
+                                    },
+                                    "bottom_right": {
+                                        "x": 239,
+                                        "y": 420
+                                    },
+                                    "bottom_left": {
+                                        "x": 75,
+                                        "y": 419
+                                    },
+                                    "width": 163.5,
+                                    "height": 44.5
+                                },
+                                "average_confidence": 0.9,
+                                "words": [
+                                    {
+                                        "text": "Ivan",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 85,
+                                                "y": 375
+                                            },
+                                            "top_right": {
+                                                "x": 172,
+                                                "y": 376
+                                            },
+                                            "bottom_right": {
+                                                "x": 171,
+                                                "y": 419
+                                            },
+                                            "bottom_left": {
+                                                "x": 83,
+                                                "y": 420
+                                            },
+                                            "width": 87.5,
+                                            "height": 44
+                                        },
+                                        "confidence": 0.94
+                                    },
+                                    {
+                                        "text": "M.",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 199,
+                                                "y": 377
+                                            },
+                                            "top_right": {
+                                                "x": 237,
+                                                "y": 379
+                                            },
+                                            "bottom_right": {
+                                                "x": 237,
+                                                "y": 420
+                                            },
+                                            "bottom_left": {
+                                                "x": 198,
+                                                "y": 420
+                                            },
+                                            "width": 38.5,
+                                            "height": 42
+                                        },
+                                        "confidence": 0.87
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "SEX M HAIR BLK EYES BLK",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 315,
+                                        "y": 369
+                                    },
+                                    "top_right": {
+                                        "x": 598,
+                                        "y": 365
+                                    },
+                                    "bottom_right": {
+                                        "x": 599,
+                                        "y": 380
+                                    },
+                                    "bottom_left": {
+                                        "x": 315,
+                                        "y": 384
+                                    },
+                                    "width": 283,
+                                    "height": 15
+                                },
+                                "average_confidence": 0.99,
+                                "words": [
+                                    {
+                                        "text": "SEX",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 317,
+                                                "y": 370
+                                            },
+                                            "top_right": {
+                                                "x": 345,
+                                                "y": 370
+                                            },
+                                            "bottom_right": {
+                                                "x": 345,
+                                                "y": 385
+                                            },
+                                            "bottom_left": {
+                                                "x": 317,
+                                                "y": 385
+                                            },
+                                            "width": 28,
+                                            "height": 15
+                                        },
+                                        "confidence": 0.98
+                                    },
+                                    {
+                                        "text": "M",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 356,
+                                                "y": 370
+                                            },
+                                            "top_right": {
+                                                "x": 364,
+                                                "y": 370
+                                            },
+                                            "bottom_right": {
+                                                "x": 364,
+                                                "y": 385
+                                            },
+                                            "bottom_left": {
+                                                "x": 356,
+                                                "y": 385
+                                            },
+                                            "width": 8,
+                                            "height": 15
+                                        },
+                                        "confidence": 1
+                                    },
+                                    {
+                                        "text": "HAIR",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 415,
+                                                "y": 369
+                                            },
+                                            "top_right": {
+                                                "x": 449,
+                                                "y": 369
+                                            },
+                                            "bottom_right": {
+                                                "x": 449,
+                                                "y": 383
+                                            },
+                                            "bottom_left": {
+                                                "x": 415,
+                                                "y": 383
+                                            },
+                                            "width": 34,
+                                            "height": 14
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "BLK",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 462,
+                                                "y": 369
+                                            },
+                                            "top_right": {
+                                                "x": 489,
+                                                "y": 368
+                                            },
+                                            "bottom_right": {
+                                                "x": 489,
+                                                "y": 383
+                                            },
+                                            "bottom_left": {
+                                                "x": 462,
+                                                "y": 383
+                                            },
+                                            "width": 27,
+                                            "height": 14.5
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "EYES",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 524,
+                                                "y": 367
+                                            },
+                                            "top_right": {
+                                                "x": 560,
+                                                "y": 366
+                                            },
+                                            "bottom_right": {
+                                                "x": 560,
+                                                "y": 382
+                                            },
+                                            "bottom_left": {
+                                                "x": 524,
+                                                "y": 382
+                                            },
+                                            "width": 36,
+                                            "height": 15.5
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "BLK",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 566,
+                                                "y": 366
+                                            },
+                                            "top_right": {
+                                                "x": 594,
+                                                "y": 366
+                                            },
+                                            "bottom_right": {
+                                                "x": 594,
+                                                "y": 381
+                                            },
+                                            "bottom_left": {
+                                                "x": 566,
+                                                "y": 382
+                                            },
+                                            "width": 28,
+                                            "height": 15.5
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "HGT 5-02\" WGT 185lb ISS",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 316,
+                                        "y": 387
+                                    },
+                                    "top_right": {
+                                        "x": 579,
+                                        "y": 389
+                                    },
+                                    "bottom_right": {
+                                        "x": 580,
+                                        "y": 403
+                                    },
+                                    "bottom_left": {
+                                        "x": 316,
+                                        "y": 402
+                                    },
+                                    "width": 263,
+                                    "height": 14.5
+                                },
+                                "average_confidence": 0.88,
+                                "words": [
+                                    {
+                                        "text": "HGT",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 317,
+                                                "y": 388
+                                            },
+                                            "top_right": {
+                                                "x": 347,
+                                                "y": 387
+                                            },
+                                            "bottom_right": {
+                                                "x": 346,
+                                                "y": 402
+                                            },
+                                            "bottom_left": {
+                                                "x": 317,
+                                                "y": 402
+                                            },
+                                            "width": 29.5,
+                                            "height": 14.5
+                                        },
+                                        "confidence": 0.99
+                                    },
+                                    {
+                                        "text": "5-02\"",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 359,
+                                                "y": 387
+                                            },
+                                            "top_right": {
+                                                "x": 399,
+                                                "y": 387
+                                            },
+                                            "bottom_right": {
+                                                "x": 399,
+                                                "y": 402
+                                            },
+                                            "bottom_left": {
+                                                "x": 359,
+                                                "y": 401
+                                            },
+                                            "width": 40,
+                                            "height": 14.5
+                                        },
+                                        "confidence": 0.65
+                                    },
+                                    {
+                                        "text": "WGT",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 415,
+                                                "y": 386
+                                            },
+                                            "top_right": {
+                                                "x": 451,
+                                                "y": 386
+                                            },
+                                            "bottom_right": {
+                                                "x": 451,
+                                                "y": 400
+                                            },
+                                            "bottom_left": {
+                                                "x": 415,
+                                                "y": 401
+                                            },
+                                            "width": 36,
+                                            "height": 14.5
+                                        },
+                                        "confidence": 0.98
+                                    },
+                                    {
+                                        "text": "185lb",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 462,
+                                                "y": 385
+                                            },
+                                            "top_right": {
+                                                "x": 501,
+                                                "y": 385
+                                            },
+                                            "bottom_right": {
+                                                "x": 502,
+                                                "y": 400
+                                            },
+                                            "bottom_left": {
+                                                "x": 462,
+                                                "y": 400
+                                            },
+                                            "width": 39.5,
+                                            "height": 15
+                                        },
+                                        "confidence": 0.71
+                                    },
+                                    {
+                                        "text": "ISS",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 555,
+                                                "y": 389
+                                            },
+                                            "top_right": {
+                                                "x": 578,
+                                                "y": 389
+                                            },
+                                            "bottom_right": {
+                                                "x": 578,
+                                                "y": 403
+                                            },
+                                            "bottom_left": {
+                                                "x": 555,
+                                                "y": 403
+                                            },
+                                            "width": 23,
+                                            "height": 14
+                                        },
+                                        "confidence": 0.98
+                                    }
+                                ]
+                            },
+                            {
+                                "text": "DD 08/13/202160648/AAFD/27 07/25/2022",
+                                "bounds": {
+                                    "top_left": {
+                                        "x": 316,
+                                        "y": 408
+                                    },
+                                    "top_right": {
+                                        "x": 631,
+                                        "y": 403
+                                    },
+                                    "bottom_right": {
+                                        "x": 631,
+                                        "y": 417
+                                    },
+                                    "bottom_left": {
+                                        "x": 316,
+                                        "y": 423
+                                    },
+                                    "width": 315,
+                                    "height": 15
+                                },
+                                "average_confidence": 0.97,
+                                "words": [
+                                    {
+                                        "text": "DD",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 318,
+                                                "y": 408
+                                            },
+                                            "top_right": {
+                                                "x": 335,
+                                                "y": 408
+                                            },
+                                            "bottom_right": {
+                                                "x": 336,
+                                                "y": 423
+                                            },
+                                            "bottom_left": {
+                                                "x": 318,
+                                                "y": 423
+                                            },
+                                            "width": 17.5,
+                                            "height": 15
+                                        },
+                                        "confidence": 0.96
+                                    },
+                                    {
+                                        "text": "08/13/202160648/AAFD/27",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 342,
+                                                "y": 408
+                                            },
+                                            "top_right": {
+                                                "x": 499,
+                                                "y": 407
+                                            },
+                                            "bottom_right": {
+                                                "x": 499,
+                                                "y": 420
+                                            },
+                                            "bottom_left": {
+                                                "x": 343,
+                                                "y": 423
+                                            },
+                                            "width": 156.5,
+                                            "height": 14
+                                        },
+                                        "confidence": 0.94
+                                    },
+                                    {
+                                        "text": "07/25/2022",
+                                        "bounds": {
+                                            "top_left": {
+                                                "x": 555,
+                                                "y": 405
+                                            },
+                                            "top_right": {
+                                                "x": 630,
+                                                "y": 404
+                                            },
+                                            "bottom_right": {
+                                                "x": 630,
+                                                "y": 418
+                                            },
+                                            "bottom_left": {
+                                                "x": 555,
+                                                "y": 419
+                                            },
+                                            "width": 75,
+                                            "height": 14
+                                        },
+                                        "confidence": 0.99
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "width": 698,
+                "height": 525
+            }
+        }
+    ]
+}
