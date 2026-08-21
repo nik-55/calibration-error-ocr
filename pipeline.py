@@ -25,9 +25,9 @@ interfaze = Interfaze(
 
 class MenuItem(BaseModel):
     nm: Optional[str] = Field(description="Name of menu")
-    unitprice: Optional[str] = Field(description="Unit price of menu")
     cnt: Optional[str] = Field(description="Quantity of menu")
     price: Optional[str] = Field(description="Total price of menu")
+    # unitprice: Optional[str] = Field(description="Unit price of menu")
     # num 	identification # of menu
     # discountprice 	discounted price of menu
     # itemsubtotal 	price of each menu after discount applied
@@ -57,8 +57,10 @@ class Total(BaseModel):
     total_price: Optional[str] = Field(description="Total price")
     cashprice: Optional[str] = Field(description="Amount of price paid in cash")
     changeprice: Optional[str] = Field(description="Amount of change in cash")
+    creditcardprice: Optional[str] = Field(
+        description="Amount of price paid in credit/debit card"
+    )
     # total_etc 	others
-    # creditcardprice 	amount of price paid in credit/debit card
     # emoneyprice 	amount of price paid in emoney, point
     # menutype_cnt 	total count of type of menu
     # menuqty_cnt 	total count of quantity
@@ -139,7 +141,7 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
 
         for menu_item in menu:
             for k, v in menu_item.items():
-                if v is not None:
+                if v is not None and isinstance(v, str):
                     menu_item[k] = normalize_text(v)
 
             receipt.menu.append(
@@ -147,7 +149,6 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
                     nm=menu_item.get("nm", None),
                     cnt=menu_item.get("cnt", None),
                     price=menu_item.get("price", None),
-                    unitprice=menu_item.get("unitprice", None),
                 )
             )
 
@@ -155,7 +156,11 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
         sub_total_dict = gt_parse["sub_total"] or {}
         for k, v in sub_total_dict.items():
             if v is not None:
-                sub_total_dict[k] = normalize_text(v)
+                if isinstance(v, list):
+                    v = v[0] if len(v) > 0 else []
+
+                if isinstance(v, str):
+                    sub_total_dict[k] = normalize_text(v)
 
         receipt.sub_total = SubTotal(
             subtotal_price=sub_total_dict.get("subtotal_price", None),
@@ -168,12 +173,17 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
 
         for k, v in total_dict.items():
             if v is not None:
-                total_dict[k] = normalize_text(v)
+                if isinstance(v, list):
+                    v = v[0] if len(v) > 0 else []
+
+                if isinstance(v, str):
+                    total_dict[k] = normalize_text(v)
 
         receipt.total = Total(
             total_price=total_dict.get("total_price", None),
             cashprice=total_dict.get("cashprice", None),
             changeprice=total_dict.get("changeprice", None),
+            creditcardprice=total_dict.get("creditcardprice", None),
         )
 
     return receipt
@@ -203,7 +213,13 @@ def get_pred_receipt(
                         "content": [
                             {
                                 "type": "text",
-                                "text": "Extract the details from this receipt. Currency unit is Indonesian Rupiah",
+                                "text": """
+Extract the details from this receipt. Copy every value exactly as printed —
+keep the original digit grouping and separators (write 11.000 or 11,000 exactly
+as it appears), and do not reformat, round, convert, or compute any value.
+If a field is not printed on the receipt, return null.
+Currency is Indonesian Rupiah.
+""",
                             },
                             {
                                 "type": "image_url",
@@ -291,7 +307,7 @@ def run_ocr(ds: Dataset, ignore_cache: bool = False):
     ocr_res_base_dir = Path("assets/ocr_results")
     ocr_res_base_dir.mkdir(parents=True, exist_ok=True)
 
-    with ThreadPoolExecutor(max_workers=3) as executor:
+    with ThreadPoolExecutor(max_workers=4) as executor:
         futures = [
             executor.submit(do_ocr, i, ds, ocr_res_base_dir, ignore_cache)
             for i in range(len(ds))
@@ -455,9 +471,9 @@ def calculate_ece_and_draw_chart(field_results: list[tuple]):
     return metric_data
 
 
-def ece_pipeline():
+def ece_pipeline(subset_len: int = 2):
     ds = load_cord_dataset()
-    sub_dataset = ds.select(range(1))
+    sub_dataset = ds.select(range(subset_len))
     result_dict = run_ocr(sub_dataset)
     field_results = []
 
