@@ -5,6 +5,7 @@ import json
 import base64
 import io
 from pathlib import Path
+import re
 import statistics
 import time
 from typing import Optional
@@ -81,6 +82,10 @@ def load_cord_dataset():
     return ds
 
 
+def loose(s: str):
+    return re.sub(r"[.,\s]", "", s) if isinstance(s, str) else s
+
+
 def normalize_text(text: str):
     text = text.lower().strip()
     return text
@@ -113,20 +118,28 @@ def get_confidence_for_text_in_parsed(
     words = [normalize_text(w) for w in text.split() if normalize_text(w)]
 
     confidence_by_words: dict[str, float] = {}
+    losse_flattened_word_confidence_dict = {
+        loose(k): v for k, v in flattened_word_confidence_dict.items()
+    }
 
     for w in words:
+        w = loose(w)
         if (
-            w not in flattened_word_confidence_dict
-            or len(flattened_word_confidence_dict[w]) == 0
+            w not in losse_flattened_word_confidence_dict
+            or len(losse_flattened_word_confidence_dict[w]) == 0
         ):
             print(f"Word {w} does not occur")
             return
 
         # Non unique for now
-        if len(flattened_word_confidence_dict[w]) > 1:
-            print(f"{w} occurs multiple times {flattened_word_confidence_dict[w]}")
+        if len(losse_flattened_word_confidence_dict[w]) > 1:
+            print(
+                f"{w} occurs multiple times {losse_flattened_word_confidence_dict[w]}"
+            )
 
-        confidence_by_words[w] = min([x[1] for x in flattened_word_confidence_dict[w]])
+        confidence_by_words[w] = min(
+            [x[1] for x in losse_flattened_word_confidence_dict[w]]
+        )
 
     return min(confidence_by_words.values())
 
@@ -328,7 +341,9 @@ def emit_field_results_from_receipt(
 ) -> list[tuple]:
     field_results = []
     # img_id, category_key, orig_alue, pred_value, confidence
-    ground_truth_menu_map = {x.nm: x for x in ground_truth_receipt.menu if x.nm}
+    ground_truth_menu_map = {
+        loose(x.nm): x for x in ground_truth_receipt.menu if loose(x.nm)
+    }
     pred_receipt: Receipt = pred_res["receipt"]
     precontext: dict | None = pred_res["precontext"]
 
@@ -341,7 +356,7 @@ def emit_field_results_from_receipt(
         if menu_item.nm is None:
             continue
 
-        nm = normalize_text(menu_item.nm)
+        nm = loose(normalize_text(menu_item.nm))
 
         if nm not in ground_truth_menu_map:
             continue
@@ -408,26 +423,56 @@ def emit_field_results_from_receipt(
     return field_results
 
 
-def draw_reliablity_diagram(bins: list[float], accuracies: list[float]):
-    fig, ax = plt.subplots(figsize=(6, 6))
+def draw_reliablity_diagram(metric_data: dict, all_confidences: list[float]):
+    bins = metric_data["bins"]
+    accuracies = metric_data["accuracies"]
+    confidences = metric_data["confidences"]
+    counts = metric_data["counts"]
 
-    ax.bar(
-        bins,
-        [a if a is not None else float("nan") for a in accuracies],
-        color="lightblue",
-        width=0.1,
-        align="edge",
-        edgecolor="black",
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 6))
+
+    # ax1.bar(
+    #     bins,
+    #     [a if a is not None else float("nan") for a in accuracies],
+    #     width=0.1,
+    #     align="edge",
+    #     color="lightblue",
+    #     edgecolor="black",
+    #     label="accuracy in bin",
+    # )
+    ax1.plot([0, 1], [0, 1], color="red", linestyle="--", label="perfect calibration")
+
+    x = [c for c in confidences if c is not None]
+    y = [a for a, c in zip(accuracies, confidences) if c is not None]
+    n = [count for count, c in zip(counts, confidences) if c is not None]
+
+    ax1.plot(x, y, "o-", color="darkblue", label="observed")
+
+    for xi, yi, ni in zip(x, y, n):
+        ax1.text(xi, yi + 0.02, f"n={ni}", ha="center", fontsize=8)
+
+    ax1.set_xlim(0, 1)
+    ax1.set_ylim(0, 1.12)
+    ax1.set_xlabel("Confidence")
+    ax1.set_ylabel("Accuracy")
+    ax1.set_title(
+        f"Reliability Diagram\n"
+        f"ECE = {metric_data['ece']:.4f} ({metric_data["direction"]})"
     )
-    ax.plot([0, 1], [0, 1], color="red", linestyle="--")
+    ax1.legend(loc="upper left", fontsize=8, bbox_to_anchor=(0, 1.02))
+    ax1.grid(alpha=0.3)
 
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.set_xlabel("Confidence")
-    ax.set_ylabel("Accuracy")
-    ax.set_title("Reliability Diagram")
+    ax2.hist(
+        all_confidences, bins=20, range=(0, 1), color="lightblue", edgecolor="black"
+    )
+    ax2.set_xlim(0, 1)
+    ax2.set_xlabel("Confidence")
+    ax2.set_ylabel("Number of fields")
+    ax2.set_title(f"Confidence Distribution (n= {len(all_confidences)} fields)")
+    ax2.grid(alpha=0.3, axis="y")
 
-    fig.savefig("assets/reliability_diagram.png")
+    fig.tight_layout()
+    fig.savefig("assets/reliability_diagram.png", dpi=140)
 
 
 def calculate_ece_and_draw_chart(field_results: list[tuple]):
@@ -438,6 +483,8 @@ def calculate_ece_and_draw_chart(field_results: list[tuple]):
         "bins": bins,
         "accuracies": [],
         "confidences": [],
+        "signed": 0,
+        "ece": 0,
     }
 
     for fr in field_results:
@@ -445,8 +492,6 @@ def calculate_ece_and_draw_chart(field_results: list[tuple]):
         index = min(math.floor(confidence * 10), len(bins) - 1)
 
         field_results_by_bins[index].append(fr)
-
-    ece = 0
 
     for i in range(10):
         if len(field_results_by_bins[i]) == 0:
@@ -456,22 +501,37 @@ def calculate_ece_and_draw_chart(field_results: list[tuple]):
 
         average_confidence = statistics.mean([x[4] for x in field_results_by_bins[i]])
         accuracy = statistics.mean(
-            [int(x[2] == x[3]) for x in field_results_by_bins[i]]
+            [int(loose(x[2]) == loose(x[3])) for x in field_results_by_bins[i]]
         )
-        ece += (len(field_results_by_bins[i]) / len(field_results)) * abs(
+        signed_weight_gap = (len(field_results_by_bins[i]) / len(field_results)) * (
             average_confidence - accuracy
         )
+
+        metric_data["ece"] += abs(signed_weight_gap)
+        metric_data["signed"] += signed_weight_gap
 
         metric_data["accuracies"].append(accuracy)
         metric_data["confidences"].append(average_confidence)
 
-    metric_data["ece"] = ece
-    draw_reliablity_diagram(metric_data["bins"], metric_data["accuracies"])
+    metric_data["counts"] = [len(fr) for fr in field_results_by_bins]
+
+    sign = (metric_data["signed"] > 0) - (metric_data["signed"] < 0)
+    metric_data["direction"] = (
+        "+ve" if sign == 1 else ("-ve" if sign == -1 else "neutral")
+    )
+
+    all_confidences = [fr[4] for fr in field_results]
+    draw_reliablity_diagram(metric_data, all_confidences)
+
+    metric_data["n"] = len(field_results)
+    metric_data["accuracy"] = statistics.mean(
+        [int(loose(x[2]) == loose(x[3])) for x in field_results]
+    )
 
     return metric_data
 
 
-def ece_pipeline(subset_len: int = 2):
+def ece_pipeline(subset_len):
     ds = load_cord_dataset()
     sub_dataset = ds.select(range(subset_len))
     result_dict = run_ocr(sub_dataset)
