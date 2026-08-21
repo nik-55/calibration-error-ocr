@@ -1,8 +1,10 @@
 import math
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import os
 import json
 import base64
 import io
+from pathlib import Path
 import statistics
 import time
 from typing import Optional
@@ -111,16 +113,18 @@ def get_confidence_for_text_in_parsed(
     confidence_by_words: dict[str, float] = {}
 
     for w in words:
-        if w not in flattened_word_confidence_dict:
+        if (
+            w not in flattened_word_confidence_dict
+            or len(flattened_word_confidence_dict[w]) == 0
+        ):
             print(f"Word {w} does not occur")
             return
 
-        # Ignore non unique for now
-        if len(flattened_word_confidence_dict[w]) != 1:
+        # Non unique for now
+        if len(flattened_word_confidence_dict[w]) > 1:
             print(f"{w} occurs multiple times {flattened_word_confidence_dict[w]}")
-            return
 
-        confidence_by_words[w] = flattened_word_confidence_dict[w][0][1]
+        confidence_by_words[w] = min([x[1] for x in flattened_word_confidence_dict[w]])
 
     return min(confidence_by_words.values())
 
@@ -134,6 +138,10 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
             menu = [menu]
 
         for menu_item in menu:
+            for k, v in menu_item.items():
+                if v is not None:
+                    menu_item[k] = normalize_text(v)
+
             receipt.menu.append(
                 MenuItem(
                     nm=menu_item.get("nm", None),
@@ -145,6 +153,10 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
 
     if "sub_total" in gt_parse:
         sub_total_dict = gt_parse["sub_total"] or {}
+        for k, v in sub_total_dict.items():
+            if v is not None:
+                sub_total_dict[k] = normalize_text(v)
+
         receipt.sub_total = SubTotal(
             subtotal_price=sub_total_dict.get("subtotal_price", None),
             tax_price=sub_total_dict.get("tax_price", None),
@@ -153,6 +165,11 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
 
     if "total" in gt_parse:
         total_dict = gt_parse["total"] or {}
+
+        for k, v in total_dict.items():
+            if v is not None:
+                total_dict[k] = normalize_text(v)
+
         receipt.total = Total(
             total_price=total_dict.get("total_price", None),
             cashprice=total_dict.get("cashprice", None),
@@ -162,8 +179,10 @@ def parse_ground_truth_to_pydantic(ground_truth: dict) -> Receipt:
     return receipt
 
 
-def image_to_base64(image: Image.Image) -> str:
+def img_transform_and_to_base64(image: Image.Image) -> str:
     buffer = io.BytesIO()
+
+    image.thumbnail((1600, 1600), Image.Resampling.LANCZOS)
 
     image.save(buffer, format="png")
     image_bytes = buffer.getvalue()
@@ -209,23 +228,79 @@ def get_pred_receipt(
     return
 
 
-def run_ocr(ds: Dataset):
-    result_dict: dict[str, tuple[Receipt, Receipt]] = {}
+def do_ocr(i: int, ds: Dataset, ocr_res_base_dir: Path, ignore_cache: bool):
+    image_id = None
+    x = ds[i]
 
-    for x in ds:
-        img_uri = f"data:image/png;base64,{image_to_base64(x['image'])}"
+    try:
+        img_uri = f"data:image/png;base64,{img_transform_and_to_base64(x['image'])}"
 
         ground_truth = json.loads(x["ground_truth"])
         image_id = ground_truth["meta"]["image_id"]
-        print(f"image_id: {image_id}")
+
+        ocr_res_path = ocr_res_base_dir / f"{image_id}.json"
+        print(f"image_id: {image_id} ocr_res_path: {ocr_res_path}")
+
+        if ocr_res_path.exists() and ignore_cache is False:
+            ocr_data = json.loads(ocr_res_path.read_text())
+            return {
+                image_id: (
+                    Receipt.model_validate(ocr_data["ground_truth_receipt"]),
+                    {
+                        "receipt": Receipt.model_validate(
+                            ocr_data["pred_res"]["receipt"]
+                        ),
+                        "precontext": ocr_data["pred_res"]["precontext"],
+                    },
+                )
+            }
+
         ground_truth_receipt = parse_ground_truth_to_pydantic(ground_truth)
+
+        if ground_truth_receipt is None:
+            print(f"ground_truth_receipt is None: {image_id}")
+            return
 
         pred_res = get_pred_receipt(img_uri)
 
         if pred_res is None:
-            continue
+            print(f"pred_res is None: {image_id}")
+            return
 
-        result_dict[image_id] = (ground_truth_receipt, pred_res)
+        ocr_res_path.write_text(
+            json.dumps(
+                {
+                    "image_id": image_id,
+                    "ground_truth_receipt": ground_truth_receipt.model_dump(),
+                    "pred_res": {
+                        "receipt": pred_res["receipt"].model_dump(),
+                        "precontext": pred_res["precontext"],
+                    },
+                },
+                indent=2,
+            )
+        )
+
+        return {image_id: (ground_truth_receipt, pred_res)}
+    except Exception as err:
+        print(f"Error ocr for {x} with {image_id}: {err}")
+
+
+def run_ocr(ds: Dataset, ignore_cache: bool = False):
+    result_dict: dict[str, tuple[Receipt, dict]] = {}
+    ocr_res_base_dir = Path("assets/ocr_results")
+    ocr_res_base_dir.mkdir(parents=True, exist_ok=True)
+
+    with ThreadPoolExecutor(max_workers=3) as executor:
+        futures = [
+            executor.submit(do_ocr, i, ds, ocr_res_base_dir, ignore_cache)
+            for i in range(len(ds))
+        ]
+
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                result_dict.update(result)
 
     return result_dict
 
@@ -247,6 +322,9 @@ def emit_field_results_from_receipt(
     flattened_word_confidence_dict = get_flattened_word_confidence_dict(precontext)
 
     for menu_item in pred_receipt.menu:
+        if menu_item.nm is None:
+            continue
+
         nm = normalize_text(menu_item.nm)
 
         if nm not in ground_truth_menu_map:
@@ -314,65 +392,12 @@ def emit_field_results_from_receipt(
     return field_results
 
 
-def ece_pipeline():
-    ds = load_cord_dataset()
-    sub_dataset = ds.select(range(3))
-    result_dict = run_ocr(sub_dataset)
-    field_results = []
-
-    for k, v in result_dict.items():
-        field_results.extend(emit_field_results_from_receipt(k, v[0], v[1]))
-
-    return field_results
-
-
-def calculate_ece(field_results: list[tuple]):
-    bins = [round(x * 0.1, 1) for x in range(10)]
-    field_results_by_bins = [[] for _ in bins]
-
-    for fr in field_results:
-        confidence = round(fr[4], 2)
-        index = math.floor(confidence * 10)
-
-        field_results_by_bins[index].append(fr)
-
-    ece = 0
-    stats = {
-        "accuracies": [],
-        "avg_confidences": [],
-    }
-
-    for i in range(10):
-        if len(field_results_by_bins[i]) == 0:
-            stats["accuracies"].append(0)
-            stats["avg_confidences"].append(0)
-            continue
-
-        average_confidence = statistics.mean([x[4] for x in field_results_by_bins[i]])
-        accuracy = statistics.mean(
-            [int(x[2] == x[3]) for x in field_results_by_bins[i]]
-        )
-        ece += (len(field_results_by_bins[i]) / len(field_results)) * abs(
-            average_confidence - accuracy
-        )
-
-        stats["accuracies"].append(accuracy)
-        stats["avg_confidences"].append(average_confidence)
-
-    return {
-        "ece": ece,
-        "field_results_by_bins": field_results_by_bins,
-        "bins": bins,
-        "stats": stats,
-    }
-
-
-def draw_reliablity_diagram(ece_data: dict):
+def draw_reliablity_diagram(bins: list[float], accuracies: list[float]):
     fig, ax = plt.subplots(figsize=(6, 6))
 
     ax.bar(
-        ece_data["bins"],
-        ece_data["stats"]["accuracies"],
+        bins,
+        [a if a is not None else float("nan") for a in accuracies],
         color="lightblue",
         width=0.1,
         align="edge",
@@ -384,7 +409,62 @@ def draw_reliablity_diagram(ece_data: dict):
     ax.set_ylim(0, 1)
     ax.set_xlabel("Confidence")
     ax.set_ylabel("Accuracy")
-    ax.set_title("Reliability_diagram")
+    ax.set_title("Reliability Diagram")
 
-    plt.show()
-    fig.savefig("reliability_diagram.png")
+    fig.savefig("assets/reliability_diagram.png")
+
+
+def calculate_ece_and_draw_chart(field_results: list[tuple]):
+    bins = [round(x * 0.1, 1) for x in range(10)]
+
+    field_results_by_bins = [[] for _ in bins]
+    metric_data = {
+        "bins": bins,
+        "accuracies": [],
+        "confidences": [],
+    }
+
+    for fr in field_results:
+        confidence = fr[4]
+        index = min(math.floor(confidence * 10), len(bins) - 1)
+
+        field_results_by_bins[index].append(fr)
+
+    ece = 0
+
+    for i in range(10):
+        if len(field_results_by_bins[i]) == 0:
+            metric_data["accuracies"].append(None)
+            metric_data["confidences"].append(None)
+            continue
+
+        average_confidence = statistics.mean([x[4] for x in field_results_by_bins[i]])
+        accuracy = statistics.mean(
+            [int(x[2] == x[3]) for x in field_results_by_bins[i]]
+        )
+        ece += (len(field_results_by_bins[i]) / len(field_results)) * abs(
+            average_confidence - accuracy
+        )
+
+        metric_data["accuracies"].append(accuracy)
+        metric_data["confidences"].append(average_confidence)
+
+    metric_data["ece"] = ece
+    draw_reliablity_diagram(metric_data["bins"], metric_data["accuracies"])
+
+    return metric_data
+
+
+def ece_pipeline():
+    ds = load_cord_dataset()
+    sub_dataset = ds.select(range(1))
+    result_dict = run_ocr(sub_dataset)
+    field_results = []
+
+    for k, v in result_dict.items():
+        field_results.extend(emit_field_results_from_receipt(k, v[0], v[1]))
+
+    metric_data = calculate_ece_and_draw_chart(field_results)
+
+    with open("assets/ece.json", "w") as f:
+        json.dump(metric_data, f)
