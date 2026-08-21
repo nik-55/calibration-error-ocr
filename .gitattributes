@@ -1,1 +1,1 @@
-assets/ocr_results/** filter=lfs diff=lfs merge=lfs -text
+assets/interfaze_ocr_results/** filter=lfs diff=lfs merge=lfs -text

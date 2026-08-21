@@ -317,7 +317,7 @@ def do_ocr(i: int, ds: Dataset, ocr_res_base_dir: Path, ignore_cache: bool):
 
 def run_ocr(ds: Dataset, ignore_cache: bool = False):
     result_dict: dict[str, tuple[Receipt, dict]] = {}
-    ocr_res_base_dir = Path("assets/ocr_results")
+    ocr_res_base_dir = Path("assets/interfaze_ocr_results")
     ocr_res_base_dir.mkdir(parents=True, exist_ok=True)
 
     with ThreadPoolExecutor(max_workers=4) as executor:
@@ -542,5 +542,5 @@ def ece_pipeline(subset_len):
 
     metric_data = calculate_ece_and_draw_chart(field_results)
 
-    with open("assets/ece.json", "w") as f:
+    with open("assets/metrics_ece.json", "w") as f:
         json.dump(metric_data, f)
